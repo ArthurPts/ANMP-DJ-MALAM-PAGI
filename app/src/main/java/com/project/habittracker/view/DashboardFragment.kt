@@ -9,9 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.project.habittracker.databinding.FragmentDashboardBinding
-import com.project.habittracker.model.Habit
-import com.project.habittracker.view.HabitAdapter
-import com.project.habittracker.util.FileHelper
 import com.project.habittracker.viewmodel.HabitViewModel
 import com.project.habittracker.R
 
@@ -20,7 +17,6 @@ class DashboardFragment : Fragment() {
     private lateinit var binding: FragmentDashboardBinding
     private lateinit var adapter: HabitAdapter
     private lateinit var viewModel: HabitViewModel
-    private lateinit var fileHelper: FileHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,43 +30,34 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this)[HabitViewModel::class.java]
-        fileHelper = FileHelper(requireContext())
-//        fileHelper.clearData()
 
-        val data = fileHelper.readFromFile().map {
-            if (it.iconName.isNullOrEmpty()) {
-                it.copy(iconName = "ic_default")
-            } else it
-        }.toMutableList()
+        viewModel.fetchHabit()
 
+        viewModel.habitList.observe(viewLifecycleOwner) {
 
-        viewModel.habitList.value = data
+            adapter = HabitAdapter(it) { habit ->
 
-        adapter = HabitAdapter(viewModel.habitList.value!!) {
-            fileHelper.writeToFile(viewModel.habitList.value!!)
-        }
+                viewModel.updateHabit(habit)
 
-        binding.recyclerViewHabit.layoutManager = LinearLayoutManager(context)
-        binding.recyclerViewHabit.adapter = adapter
-
-        findNavController().currentBackStackEntry
-            ?.savedStateHandle
-            ?.getLiveData<Habit>("newHabit")
-            ?.observe(viewLifecycleOwner) { habit ->
-                habit?: return@observe
-
-                viewModel.habitList.value!!.add(habit)
-                adapter.notifyItemInserted(viewModel.habitList.value!!.size - 1)
-                fileHelper.writeToFile(viewModel.habitList.value!!)
-
-                findNavController().currentBackStackEntry
-                    ?.savedStateHandle
-                    ?.remove<Habit>("newHabit")
             }
+
+            binding.recyclerViewHabit.layoutManager =
+                LinearLayoutManager(context)
+
+            binding.recyclerViewHabit.adapter = adapter
+
+        }
 
         binding.fabAdd.setOnClickListener {
             val action = DashboardFragmentDirections.actionDashboardToCreate()
             findNavController().navigate(action)
         }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.fetchHabit()
     }
 }

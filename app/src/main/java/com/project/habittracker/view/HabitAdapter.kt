@@ -10,7 +10,7 @@ import com.project.habittracker.model.Habit
 
 class HabitAdapter(
     private val list: MutableList<Habit>,
-    private val onUpdate: () -> Unit
+    private val onUpdate: (Habit) -> Unit
 ) : RecyclerView.Adapter<HabitAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemHabitBinding) :
@@ -71,7 +71,7 @@ class HabitAdapter(
                 habit.progress += habit.step
                 if (habit.progress > habit.target) habit.progress = habit.target
                 notifyItemChanged(position)
-                onUpdate()
+                onUpdate(habit)
             }
         }
 
@@ -80,7 +80,7 @@ class HabitAdapter(
                 habit.progress -= habit.step
                 if (habit.progress < 0) habit.progress = 0
                 notifyItemChanged(position)
-                onUpdate()
+                onUpdate(habit)
             }
 //                holder.binding.btnPlus.isEnabled = true
 

@@ -10,10 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.project.habittracker.databinding.FragmentCreateHabitBinding
 import com.project.habittracker.model.Habit
+import androidx.lifecycle.ViewModelProvider
+import com.project.habittracker.viewmodel.HabitViewModel
 
 class CreateHabitFragment : Fragment() {
 
     private lateinit var binding: FragmentCreateHabitBinding
+
+    private lateinit var viewModel: HabitViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,6 +29,7 @@ class CreateHabitFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this)[HabitViewModel::class.java]
 
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
@@ -77,10 +82,7 @@ class CreateHabitFragment : Fragment() {
                 step = step,
                 iconName = iconName
             )
-
-            findNavController().previousBackStackEntry
-                ?.savedStateHandle
-                ?.set("newHabit", newHabit)
+            viewModel.insertHabit(newHabit)
 
             findNavController().navigateUp()
         }

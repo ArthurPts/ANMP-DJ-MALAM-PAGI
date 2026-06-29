@@ -6,14 +6,21 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.project.habittracker.dao.UserDao
 import com.project.habittracker.model.User
+import com.project.habittracker.dao.HabitDao
+import com.project.habittracker.model.Habit
 
 @Database(
-    entities = [User::class],
-    version = 1
+    entities = [
+        User::class,
+        Habit::class
+    ],
+    version = 2
 )
+
 abstract class HabitDatabase:RoomDatabase() {
 
     abstract fun userDao():UserDao
+    abstract fun habitDao(): HabitDao
 
     companion object{
 
@@ -27,7 +34,9 @@ abstract class HabitDatabase:RoomDatabase() {
                 context.applicationContext,
                 HabitDatabase::class.java,
                 "habitdb"
-            ).build()
+            )
+                .fallbackToDestructiveMigration()
+                .build()
 
         operator fun invoke(context:Context)=
             instance?: synchronized(LOCK){
