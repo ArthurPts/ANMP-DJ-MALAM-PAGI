@@ -19,5 +19,5 @@ class SessionManager(val context: Context) {
     fun isLogin(): Boolean {
         return sharedPreferences.getBoolean(keyLogin, false)
     }
-
+//
 }
