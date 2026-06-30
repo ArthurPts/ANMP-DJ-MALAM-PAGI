@@ -10,7 +10,8 @@ import com.project.habittracker.model.Habit
 
 class HabitAdapter(
     private val list: MutableList<Habit>,
-    private val onUpdate: (Habit) -> Unit
+    private val onUpdate: (Habit) -> Unit,
+    private val onEdit: (Habit) -> Unit
 ) : RecyclerView.Adapter<HabitAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemHabitBinding) :
@@ -85,6 +86,10 @@ class HabitAdapter(
             }
 //                holder.binding.btnPlus.isEnabled = true
 
+        }
+
+        holder.binding.txtName.setOnClickListener {
+            onEdit(habit)
         }
     }
 

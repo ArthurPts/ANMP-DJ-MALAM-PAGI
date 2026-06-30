@@ -27,9 +27,11 @@ class LoginViewModel(application: Application)
 
             val db = HabitDatabase(getApplication())
 
-            if(db.userDao().getUserCount()==0){
+            if (db.userDao().getUserCount() == 0) {
                 db.userDao().insertAll(
-                    User("student","123")
+                    User("student", "123"),
+                    User("admin", "admin"),
+                    User("student2", "st2")
                 )
             }
 

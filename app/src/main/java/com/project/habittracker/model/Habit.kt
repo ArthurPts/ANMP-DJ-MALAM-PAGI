@@ -8,17 +8,19 @@ import java.io.Serializable
 data class Habit(
 
     @PrimaryKey(autoGenerate = true)
-    var id:Int = 0,
+    var id: Int = 0,
 
-    val name:String,
-    val description:String,
-    var progress:Int,
-    val target:Int,
-    val unit:String,
-    val step:Int,
-    val iconName:String? = null
+    var username: String,
+    var name: String,
+    var description: String,
+    var progress: Int,
+    var target: Int,
+    var unit: String,
+    var step: Int,
+    var iconName: String? = null
 
-):Serializable {
+) : Serializable {
+
     val status: String
         get() = if (progress >= target) "Completed" else "In Progress"
 }

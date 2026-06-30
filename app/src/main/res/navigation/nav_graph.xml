@@ -25,6 +25,9 @@
             android:id="@+id/action_dashboard_to_create"
             app:destination="@id/createHabitFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_dashboard_to_edit"
+            app:destination="@id/editHabitFragment" />
     </fragment>
 
     <fragment
@@ -33,4 +36,9 @@
         android:label="Create Habit"
         tools:layout="@layout/fragment_create_habit" />
 
+    <fragment
+        android:id="@+id/editHabitFragment"
+        android:name="com.project.habittracker.view.EditHabitFragment"
+        android:label="Edit Habit"
+        tools:layout="@layout/fragment_edit_habit" />
 </navigation>

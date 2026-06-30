@@ -11,6 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.project.habittracker.databinding.FragmentDashboardBinding
 import com.project.habittracker.viewmodel.HabitViewModel
 import com.project.habittracker.R
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.NavOptions
+import com.project.habittracker.util.SessionManager
 
 class DashboardFragment : Fragment() {
 
@@ -35,11 +38,24 @@ class DashboardFragment : Fragment() {
 
         viewModel.habitList.observe(viewLifecycleOwner) {
 
-            adapter = HabitAdapter(it) { habit ->
+            adapter = HabitAdapter(
+                it,
 
-                viewModel.updateHabit(habit)
+                { habit ->
+                    viewModel.updateHabit(habit)
+                },
 
-            }
+                { habit ->
+                    val bundle = Bundle()
+                    bundle.putSerializable("habit", habit)
+
+                    findNavController().navigate(
+                        R.id.action_dashboard_to_edit,
+                        bundle
+                    )
+                }
+
+            )
 
             binding.recyclerViewHabit.layoutManager =
                 LinearLayoutManager(context)
@@ -53,6 +69,21 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        binding.btnLogout.setOnClickListener {
+
+            val session = SessionManager(requireContext())
+            session.logout()
+
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.dashboardFragment, true)
+                .build()
+
+            findNavController().navigate(
+                R.id.loginFragment,
+                null,
+                navOptions
+            )
+        }
     }
 
     override fun onResume() {
