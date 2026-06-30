@@ -18,4 +18,7 @@ data class Habit(
     val step:Int,
     val iconName:String? = null
 
-):Serializable
+):Serializable {
+    val status: String
+        get() = if (progress >= target) "Completed" else "In Progress"
+}

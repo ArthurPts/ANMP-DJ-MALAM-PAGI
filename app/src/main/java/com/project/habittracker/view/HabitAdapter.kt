@@ -27,12 +27,13 @@ class HabitAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val habit = list[position]
+        holder.binding.habit = habit
 
-        holder.binding.txtName.text = habit.name
-        holder.binding.txtDesc.text = habit.description
+//        holder.binding.txtName.text = habit.name
+//        holder.binding.txtDesc.text = habit.description
 
-        holder.binding.progressBar.max = habit.target
-        holder.binding.progressBar.progress = habit.progress
+//        holder.binding.progressBar.max = habit.target
+//        holder.binding.progressBar.progress = habit.progress
 
         val resId = holder.itemView.context.resources.getIdentifier(
             habit.iconName,
@@ -46,7 +47,7 @@ class HabitAdapter(
             holder.binding.imgHabit.setImageResource(R.drawable.ic_menu_info_details)
         }
         if (habit.progress >= habit.target) {
-            holder.binding.txtStatus.text = "Completed"
+//            holder.binding.txtStatus.text = "Completed"
             holder.binding.txtStatus.setTextColor(0xFF2E7D32.toInt())
             holder.binding.btnPlus.isEnabled = false
 
@@ -54,7 +55,7 @@ class HabitAdapter(
                 ColorStateList.valueOf(0xFF4CAF50.toInt())
 
         } else {
-            holder.binding.txtStatus.text = "In Progress"
+//            holder.binding.txtStatus.text = "In Progress"
             holder.binding.txtStatus.setTextColor(0xFF757575.toInt())
 //                holder.binding.btnMinus.isEnabled = false
             holder.binding.btnPlus.isEnabled = true
@@ -64,7 +65,7 @@ class HabitAdapter(
                 ColorStateList.valueOf(0xFF7C4DFF.toInt())
         }
 
-        holder.binding.txtProgress.text = "${habit.progress} / ${habit.target} ${habit.unit}"
+//        holder.binding.txtProgress.text = "${habit.progress} / ${habit.target} ${habit.unit}"
 
         holder.binding.btnPlus.setOnClickListener {
             if (habit.progress < habit.target) {
